@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/dep")
 public class DepartmentController {
-    private static String EMPLOYEE_SERVICE_URL="http://localhost:8080/api";
+    //private static String EMPLOYEE_SERVICE_URL="http://localhost:8080/api";
     @Autowired
     private DepartmentService service;
 
@@ -36,19 +36,12 @@ public class DepartmentController {
     @GetMapping(value = "/{depId}")
     @CircuitBreaker(name="randomDepartment", fallbackMethod = "randomError" )
     public ResponseEntity<Employee[]> getEmployeeByDepartment(@PathVariable int depId){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.set("X-COM-PERSIST", "NO");
-        headers.set("X-COM-LOCATION", "USA");
-        HttpEntity<Employee> entity = new HttpEntity<>(headers);
-        ResponseEntity<Employee[]> responseEntity = template.exchange(EMPLOYEE_SERVICE_URL+"/employeeByDep/"+depId,HttpMethod.GET, entity, Employee[].class);
-        return responseEntity;
+        return service.getEmployeeByDepId2(depId);
     }
     @GetMapping(value = "/t2/{depId}")
     @HystrixCommand( fallbackMethod = "randomError2")
     public String getEmployeeByDepartment2(@PathVariable int depId){
-        String s= Arrays.toString(template.getForObject(EMPLOYEE_SERVICE_URL + "/employeeByDep/" + depId, Employee[].class));
-        return s;
+       return  service.getEmployeeByDepId(depId);
     }
 
     @GetMapping("/getAllDepartments")

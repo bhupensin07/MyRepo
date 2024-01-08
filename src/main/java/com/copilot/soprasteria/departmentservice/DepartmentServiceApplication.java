@@ -16,12 +16,12 @@ public class DepartmentServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DepartmentServiceApplication.class, args);
 	}
-	@Bean
+	/*@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 
 		return builder
 				.setConnectTimeout(Duration.ofMillis(3000))
 				.setReadTimeout(Duration.ofMillis(3000))
 				.build();
-	}
+	}*/
 }
